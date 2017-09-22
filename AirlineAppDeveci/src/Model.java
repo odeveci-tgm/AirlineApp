@@ -13,28 +13,81 @@ import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
 
 public class Model {
-	JTextField userVal = new JTextField("root");
-	JTextField portVal = new JTextField("3306");
-	JTextField pwdVal = new JTextField("password");
-	JTextField serverVal = new JTextField("localhost");
-	JTextField dbVal = new JTextField("datenbank");
-	JButton buttonServer = new JButton("bestätigen");
+	
+
+	
+	JTextField userVal = new JTextField(8);
+	JTextField portVal = new JTextField(8);
+	JTextField pwdVal = new JTextField(8);
+	JTextField serverVal = new JTextField(8);
+	JTextField dbVal = new JTextField(8);
+	JLabel serverL = new JLabel("Servername: ");
+	JLabel userL = new JLabel("Username: ");
+	JLabel pwdL = new JLabel("Passwort: ");
+	JLabel portL = new JLabel("Portnummer: ");
+	JLabel dbL = new JLabel("Datenbank: ");
+	JLabel arvL = new JLabel("Flughafen / ANKUNFT: ");
+	JLabel deptL = new JLabel("Flughafen / ABFLUG: ");
+	JLabel fail = new JLabel("Connection failed!");
+	JComboBox jcDept = new JComboBox();
+	JComboBox jcArv = new JComboBox();
+	JButton buttonServer = new JButton("connect");
 	ActionListener l;
+	
 	public void init() {
 		
 		// GUI-Frame Modellierung
 		
 		JFrame jf = new JFrame("AirlineApp");
 		jf.setSize(600, 600);
-		JPanel jp = new JPanel();
-		jp.add(serverVal);
-		jp.add(portVal);
-		jp.add(userVal);
-		jp.add(pwdVal);
-		jp.add(dbVal);
-		jp.add(buttonServer);
-		buttonServer.setName("server");
-	
+		JPanel jp = new JPanel(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		c.insets = new Insets(10,10,10,10);
+		c.gridx = 0;
+		jp.add(userL,c);
+		c.gridx++;
+		jp.add(userVal,c);
+		
+		c.gridx++;
+		jp.add(pwdL, c);
+		c.gridx++;
+		jp.add(pwdVal,c);
+		
+		c.gridy=1;
+		c.gridx=0;
+		jp.add(serverL,c);
+		c.gridx=1;
+		jp.add(serverVal,c);
+		
+		c.gridx++;
+		jp.add(portL, c);
+		c.gridx++;
+		jp.add(portVal,c);
+		
+		c.gridx++;
+		jp.add(dbL,c);
+		c.gridx++;
+		jp.add(dbVal,c);
+		
+		
+		
+		
+		c.gridy++;
+		c.gridx=2;
+		c.gridwidth = 2;
+		jp.add(buttonServer,c);
+		
+		
+		c.gridy++;
+		c.gridx=0;
+		jp.add(deptL, c);
+		c.gridx++;
+		jp.add(jcDept,c);
+		
+		c.gridx=3;
+		jp.add(arvL,c);
+		c.gridx++;
+		jp.add(jcArv, c);
 		jp.setBackground(Color.LIGHT_GRAY);
 		jf.setLocationRelativeTo(null);
 		jf.setContentPane(jp);
@@ -44,6 +97,7 @@ public class Model {
 		buttonServer.addActionListener(l);
 		jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		jf.setVisible(true);
+		jf.pack();
 	}
 	
 	public void dataCheck () {
