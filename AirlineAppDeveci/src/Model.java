@@ -3,6 +3,8 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Scanner;
 
 import javax.swing.*;
@@ -29,12 +31,13 @@ public class Model {
 	JLabel arvL = new JLabel("Flughafen / ANKUNFT: ");
 	JLabel deptL = new JLabel("Flughafen / ABFLUG: ");
 	JLabel fail = new JLabel("");
-	JComboBox jcDept = new JComboBox();
-	JComboBox jcArv = new JComboBox();
+	JComboBox<String> jcDept = new JComboBox();
+	JComboBox<String> jcArv = new JComboBox();
 	JFrame jf = new JFrame("AirlineApp");
 	JPanel jp = new JPanel(new GridBagLayout());
 	JButton buttonServer = new JButton("connect");
 	ActionListener l;
+	
 	
 	public void init() {
 		
@@ -88,14 +91,27 @@ public class Model {
 		
 		c.gridy++;
 		c.gridx=0;
+		c.anchor = GridBagConstraints.WEST;
 		jp.add(deptL, c);
-		c.gridx++;
-		jp.add(jcDept,c);
-		
 		c.gridx=3;
+		c.anchor = GridBagConstraints.EAST;
 		jp.add(arvL,c);
+		
+		c.gridy++;
+		c.gridx=0;
+		c.gridwidth=10;
+		c.anchor = GridBagConstraints.WEST;
+		jp.add(jcDept,c);
 		c.gridx++;
+		c.gridwidth=10;
+		c.anchor = GridBagConstraints.EAST;
 		jp.add(jcArv, c);
+		
+		jcArv.setPrototypeDisplayValue("....................................................................");
+		jcDept.setPrototypeDisplayValue(".....................................................................");
+		
+		
+		
 		jp.setBackground(Color.LIGHT_GRAY);
 		jf.setLocationRelativeTo(null);
 		jf.setContentPane(jp);
@@ -132,18 +148,42 @@ public class Model {
 					+Integer.parseInt(portVal.getText())+"/"+dbVal.getText();
 					Connection con2 = DriverManager.getConnection(url,userVal.getText(),pwdVal.getText());
 					Statement st = con2.createStatement();
-					// Test-Query
-					ResultSet rs = st.executeQuery("SELECT * from airlines");
-					rs.next();
-					String test = rs.getString("name");
-					System.out.println(test);
+					
+					// Query für alle möglichen Flughäfen formatiert in "<airportname>,<landcode>"
+					
+					ResultSet rs = st.executeQuery("select name,country from airports");
+					
+					//ArrayList für alle Elemente
+					
+					ArrayList<String> airports = new ArrayList<String>();
+					while(rs.next()) {
+						airports.add(rs.getString("name")+","+rs.getString("country"));
+					}
+					
+					
+					//Umwandlung in Array anschließend Zuweisung für die jeweiligen Dropdowns
+					
+					String airArr[] = airports.toArray(new String[airports.size()]);
+					int i = 0;
+					
+					for(String str: airArr) {
+						jcDept.addItem(str);
+						jcArv.addItem(str);
+						i++;
+					}
+					System.out.println(i);
+					
 					fail.setForeground(Color.green);
 					fail.setText("Connection established!");
+					jf.pack();
 					rs.close(); st.close(); con2.close();
+					
+					
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					fail.setForeground(Color.red);
 					fail.setText("Connection failed! Überprüfen Sie Ihre Werte.");
+					jf.pack();
 					e1.printStackTrace();	
 				}
 					// Wird wahrscheinlich nie eintreten
@@ -151,6 +191,7 @@ public class Model {
 					e2.printStackTrace();
 					fail.setText("Geben Sie bitte überall gültige Werte ein!");
 					fail.setForeground(Color.red);
+					jf.pack();
 				}
 				
 				catch (NumberFormatException e3) {
