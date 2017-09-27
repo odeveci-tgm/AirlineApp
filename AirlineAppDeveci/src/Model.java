@@ -20,9 +20,12 @@ public class Model {
 	
 	JTextField userVal = new JTextField(8);
 	JTextField portVal = new JTextField(8);
-	JTextField pwdVal = new JTextField(8);
+	JPasswordField pwdVal = new JPasswordField(8);
 	JTextField serverVal = new JTextField(8);
 	JTextField dbVal = new JTextField(8);
+	JTextField vorName = new JTextField(8);
+	JTextField nachName = new JTextField(8);
+	
 	JLabel serverL = new JLabel("Servername: ");
 	JLabel userL = new JLabel("Username: ");
 	JLabel pwdL = new JLabel("Passwort: ");
@@ -31,25 +34,57 @@ public class Model {
 	JLabel arvL = new JLabel("Flughafen / ANKUNFT: ");
 	JLabel deptL = new JLabel("Flughafen / ABFLUG: ");
 	JLabel fail = new JLabel("");
+	JLabel passL = new JLabel("Wählen Sie Ihren gewünschten Flug aus. Geben Sie anschließend Vor- und Nachname ein.");
+	JLabel vorNameL = new JLabel("Vorname: ");
+	JLabel nachNameL = new JLabel("Nachname: ");
+	
 	JComboBox<String> jcDept = new JComboBox();
 	JComboBox<String> jcArv = new JComboBox();
 	JComboBox<String> jcFlights = new JComboBox();
-	JFrame jf = new JFrame("AirlineApp");
+	
+	JFrame jf = new JFrame("AdminAirlineApp");
 	JPanel jp = new JPanel(new GridBagLayout());
+
 	JButton buttonServer = new JButton("Verbinden");
 	JButton buttonFlight = new JButton("Flüge anzeigen");
+	JButton buttonPass = new JButton("Ausgewählten Flug buchen");
+	
+	
 	ActionListener l;
+	
 	
 	
 	public void init() {
 		
-		// GUI-Frame Modellierung
+		/* 
+		 * 
+			GUI MODELLIERUNG
+		 *	
+		 */
+		
+		// Alle Felder NACH dem connect Button werden unsichtbar gestellt, um die Buchung schrittweise zu gestalten
+		jcDept.setVisible(false);
+		jcArv.setVisible(false);
+		jcFlights.setVisible(false);
+		buttonFlight.setVisible(false);
+		buttonPass.setVisible(false);
+		arvL.setVisible(false);
+		deptL.setVisible(false);
+		passL.setVisible(false);
+		vorNameL.setVisible(false);
+		nachNameL.setVisible(false);
+		vorName.setVisible(false);
+		nachName.setVisible(false);
+		
 		userVal.setText("root");
 		portVal.setText("3306");
 		serverVal.setText("localhost");
 		dbVal.setText("list_3ahit");
+		passL.setForeground(Color.blue);
 		buttonServer.setActionCommand("connect");
 		buttonFlight.setActionCommand("flights");
+		
+		
 		
 		
 		jf.setSize(1000, 700);
@@ -98,6 +133,7 @@ public class Model {
 		c.gridy++;
 		jp.add(fail,c);
 		
+		
 		c.gridy++;
 		c.gridx=0;
 		c.anchor = GridBagConstraints.WEST;
@@ -127,6 +163,41 @@ public class Model {
 		c.gridy++;
 		c.anchor = GridBagConstraints.CENTER;
 		jp.add(jcFlights, c);
+		
+		c.gridy++;
+		c.gridx=0;
+		
+		
+		c.gridy++;
+		c.gridwidth=6;
+		c.anchor = GridBagConstraints.CENTER;
+		jp.add(passL,c);
+		
+		c.gridy++;
+		c.gridx=0;
+		c.gridwidth=2;
+		c.anchor= GridBagConstraints.WEST;
+		jp.add(vorNameL,c);
+		
+		c.gridx++;
+		jp.add(vorName,c);
+		
+		c.anchor = GridBagConstraints.CENTER;
+		c.gridx++;
+		jp.add(nachNameL,c);
+		
+		c.anchor = GridBagConstraints.EAST;
+		c.gridx++;
+		jp.add(nachName,c);
+		
+		c.gridy++;
+		c.gridx=0;
+		c.gridwidth=8;
+		c.anchor=GridBagConstraints.CENTER;
+		jp.add(buttonPass,c);
+		
+		
+		
 		jcArv.setPrototypeDisplayValue("....................................................................");
 		jcDept.setPrototypeDisplayValue(".....................................................................");
 		jcFlights.setPrototypeDisplayValue("...................................................................................................................................................................");
@@ -134,8 +205,6 @@ public class Model {
 		jf.setLocationRelativeTo(null);
 		jf.setContentPane(jp);
 		
-		// Action-Listener für diverse Buttons (unter anderem für non-hardcoded parameters für ds)
-		//buttonServer.addActionListener(l);
 		
 		jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		jf.setVisible(true);
@@ -145,6 +214,9 @@ public class Model {
 		 l = new ActionListener() {
 
 			@Override
+			
+			//On-Click = actionPerformed
+			
 			public void actionPerformed(ActionEvent e) {
 				MysqlDataSource ds = new MysqlDataSource();
 				try {
@@ -155,6 +227,7 @@ public class Model {
 					
 					switch (e.getActionCommand()) {
 						
+					// Je nach Button werden andere Querys eingeleitet
 					
 					case "connect":
 										// DataSource Parameter werden gesetzt.
@@ -182,6 +255,7 @@ public class Model {
 										}
 										
 										
+										
 										//Umwandlung in Array anschließend Zuweisung für die jeweiligen Dropdowns
 										
 										String airArr[] = airports.toArray(new String[airports.size()]);
@@ -196,6 +270,16 @@ public class Model {
 										
 										fail.setForeground(Color.green);
 										fail.setText("Connection established!");
+										
+										
+										
+										
+										arvL.setVisible(true);
+										deptL.setVisible(true);
+										jcArv.setVisible(true);
+										jcDept.setVisible(true);
+										buttonFlight.setVisible(true);
+										
 										rs.close(); st.close(); con.close();
 										break;
 										
@@ -230,9 +314,27 @@ public class Model {
 										if (flightsArr.length==0) {
 											fail.setForeground(Color.red);
 											fail.setText("Keine Flüge vorhanden.");
+										} else {
+											jcFlights.setVisible(true);
+											buttonFlight.setVisible(true);
+											vorNameL.setVisible(true);
+											nachNameL.setVisible(true);
+											nachName.setVisible(true);
+											vorName.setVisible(true);
+											passL.setVisible(true);
+											buttonPass.setVisible(true);
+											
 										}
 										
+										
+										
+										
 										break;
+					case "passagier":
+										
+									
+										break;
+										
 										
 					default:			
 										System.out.println("Something went wrong.");
