@@ -18,36 +18,38 @@ public class Model {
 	
 
 	
-	JTextField userVal = new JTextField(8);
-	JTextField portVal = new JTextField(8);
-	JPasswordField pwdVal = new JPasswordField(8);
-	JTextField serverVal = new JTextField(8);
-	JTextField dbVal = new JTextField(8);
-	JTextField vorName = new JTextField(8);
-	JTextField nachName = new JTextField(8);
+	static JTextField userVal = new JTextField(8);
+	static JTextField portVal = new JTextField(8);
+	static JPasswordField pwdVal = new JPasswordField(8);
+	static JTextField serverVal = new JTextField(8);
+	static JTextField dbVal = new JTextField(8);
+	static JTextField vorName = new JTextField(8);
+	static JTextField nachName = new JTextField(8);
 	
 	JLabel serverL = new JLabel("Servername: ");
 	JLabel userL = new JLabel("Username: ");
 	JLabel pwdL = new JLabel("Passwort: ");
 	JLabel portL = new JLabel("Portnummer: ");
 	JLabel dbL = new JLabel("Datenbank: ");
-	JLabel arvL = new JLabel("Flughafen / ANKUNFT: ");
-	JLabel deptL = new JLabel("Flughafen / ABFLUG: ");
-	JLabel fail = new JLabel("");
-	JLabel passL = new JLabel("Wählen Sie Ihren gewünschten Flug aus. Geben Sie anschließend Vor- und Nachname ein.");
-	JLabel vorNameL = new JLabel("Vorname: ");
-	JLabel nachNameL = new JLabel("Nachname: ");
+	static JLabel arvL = new JLabel("Flughafen / ANKUNFT: ");
+	static JLabel deptL = new JLabel("Flughafen / ABFLUG: ");
+	static JLabel fail = new JLabel("");
+	static JLabel passL = new JLabel("Wählen Sie Ihren gewünschten Flug aus. Geben Sie anschließend Vor- und Nachname ein.");
+	static JLabel vorNameL = new JLabel("Vorname: ");
+	static JLabel nachNameL = new JLabel("Nachname: ");
+	static JLabel dbArt = new JLabel("Hersteller: ");
 	
-	JComboBox<String> jcDept = new JComboBox();
-	JComboBox<String> jcArv = new JComboBox();
-	JComboBox<String> jcFlights = new JComboBox();
+	static JComboBox<String> jcDept = new JComboBox();
+	static JComboBox<String> jcArv = new JComboBox();
+	static JComboBox<String> jcFlights = new JComboBox();
+	static JComboBox<String> jcDb = new JComboBox();
 	
 	JFrame jf = new JFrame("AdminAirlineApp");
 	JPanel jp = new JPanel(new GridBagLayout());
 
 	JButton buttonServer = new JButton("Verbinden");
-	JButton buttonFlight = new JButton("Flüge anzeigen");
-	JButton buttonPass = new JButton("Ausgewählten Flug buchen");
+	static JButton buttonFlight = new JButton("Flüge anzeigen");
+	static JButton buttonPass = new JButton("Ausgewählten Flug buchen");
 	
 	
 	ActionListener l;
@@ -104,6 +106,11 @@ public class Model {
 		c.gridx++;
 		jp.add(pwdVal,c);
 		
+		c.gridx++;
+		jp.add(dbArt,c);
+		c.gridx++;
+		jp.add(jcDb,c);
+		
 		c.gridy=1;
 		c.gridx=0;
 		jp.add(serverL,c);
@@ -120,6 +127,9 @@ public class Model {
 		c.gridx++;
 		jp.add(dbVal,c);
 		
+		jcDb.addItem("MySQL");
+		jcDb.addItem("PostgreSQL");
+		jcDb.addItem("Oracle");
 		
 		
 		
@@ -218,126 +228,35 @@ public class Model {
 			//On-Click = actionPerformed
 			
 			public void actionPerformed(ActionEvent e) {
-				MysqlDataSource ds = new MysqlDataSource();
 				try {
 					
 					String url = "jdbc:mysql://"+serverVal.getText()+":"
 					+Integer.parseInt(portVal.getText())+"/"+dbVal.getText();
 					Connection con = DriverManager.getConnection(url,userVal.getText(),pwdVal.getText());
+					sqlDatabase sd = new sqlDatabase();
 					
 					switch (e.getActionCommand()) {
 						
 					// Je nach Button werden andere Querys eingeleitet
 					
 					case "connect":
-										// DataSource Parameter werden gesetzt.
-										
-										ds.setUser(userVal.getText());
-										ds.setPassword(pwdVal.getText());
-										ds.setServerName(serverVal.getText());
-										ds.setPortNumber(Integer.parseInt(portVal.getText()));
-										
-										// Driver werden geladen, sagt auf welche DB zugegriffen werden soll, (alternativ geht auch 
-										// in der SELECT query database.tablename zu schreiben)
-										
-										
-										Statement st = con.createStatement();
-										ResultSet rs = st.executeQuery("select countries.name,airports.name from airports,countries WHERE airports.country = countries.code ORDER BY 1;");
-										
-									
-										//ArrayList für alle Elemente
-										
-										ArrayList<String> airports = new ArrayList<String>();
-										while(rs.next()) {
-											String country = rs.getString("countries.name");
-											String airport = rs.getString("airports.name");
-											airports.add(airport+","+country);
-										}
-										
-										
-										
-										//Umwandlung in Array anschließend Zuweisung für die jeweiligen Dropdowns
-										
-										String airArr[] = airports.toArray(new String[airports.size()]);
-										int i = 0;
-										
-										for(String str: airArr) {
-											jcDept.addItem(str);
-											jcArv.addItem(str);
-											i++;
-										}
-										System.out.println(i);
-										
-										fail.setForeground(Color.green);
-										fail.setText("Connection established!");
-										
-										
-										
-										
-										arvL.setVisible(true);
-										deptL.setVisible(true);
-										jcArv.setVisible(true);
-										jcDept.setVisible(true);
-										buttonFlight.setVisible(true);
-										
-										rs.close(); st.close(); con.close();
+										sd.connect();
+										sd.getAirports();	
 										break;
 										
 										
 					case "flights":		
-										// Value von der DropDown wird geholt. Land und Flughafenname werden wieder getrennt per split().
-										// Esentziell für die Query
-										jcFlights.removeAllItems();
-										String dep =  String.valueOf(jcDept.getSelectedItem());
-										String arv = String.valueOf(jcArv.getSelectedItem());
-										String[] partsDep = dep.split(",");
-										String[] arvDep = arv.split(",");
-										System.out.println(partsDep[0]);
-										Statement st2 = con.createStatement();
-										ResultSet rs2 = st2.executeQuery("select * from flights,(select airportcode as 'depcode' from airports "
-										+ "WHERE name='"+partsDep[0]+"')dep,(select airportcode as 'arrcode' from airports WHERE name='"+arvDep[0]+"')arr "
-										+ "WHERE depcode = departure_airport AND arrcode = destination_airport;");
-										
-										ArrayList<String> flights = new ArrayList<String>();
-										while(rs2.next()) {
-												flights.add(rs2.getString("departure_airport")+","+rs2.getTime("departure_time")+"," 
-												+ rs2.getString("destination_airport")+","+rs2.getTime("destination_time"));
-												
-										}
-										
-										String[] flightsArr = flights.toArray(new String[flights.size()]);
-										
-										for (String str:flightsArr) {
-											jcFlights.addItem(str);
-										}
-										
-										if (flightsArr.length==0) {
-											fail.setForeground(Color.red);
-											fail.setText("Keine Flüge vorhanden.");
-										} else {
-											jcFlights.setVisible(true);
-											buttonFlight.setVisible(true);
-											vorNameL.setVisible(true);
-											nachNameL.setVisible(true);
-											nachName.setVisible(true);
-											vorName.setVisible(true);
-											passL.setVisible(true);
-											buttonPass.setVisible(true);
-											
-										}
-										
-										
-										
-										
+						
+										sd.getFlights();
 										break;
 					case "passagier":
 										
 									
 										break;
 										
-										
+						
 					default:			
-										System.out.println("Something went wrong.");
+										System.out.println("Something went wrong. REALLY Wrong.");
 										break;
 									}
 					
