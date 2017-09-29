@@ -4,7 +4,6 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
 import com.mysql.jdbc.Statement;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
@@ -15,12 +14,30 @@ public class sqlDatabase {
 	java.sql.Statement st2;
 	ResultSet rs;
 	MysqlDataSource ds = new MysqlDataSource();
+	String url;
+	
+	
+
 	
 	public sqlDatabase() {
-		String url = "jdbc:mysql://"+Model.serverVal.getText()+":"
+		
+		
+		String urlSql = "jdbc:mysql://"+Model.serverVal.getText()+":"
 		+Integer.parseInt(Model.portVal.getText())+"/"+Model.dbVal.getText();
+		String urlpSql = "jdbc:postgres://"+Model.serverVal.getText()+":"
+				+Integer.parseInt(Model.portVal.getText())+"/"+Model.dbVal.getText();
 		try {
-			con = DriverManager.getConnection(url,Model.userVal.getText(),Model.pwdVal.getText());
+			
+		if(Model.jcDb.getSelectedItem()=="MySQL") {
+			con = DriverManager.getConnection(urlSql,Model.userVal.getText(),Model.pwdVal.getText());
+			System.out.println("bin drin");
+		} 
+		
+		if(Model.jcDb.getSelectedItem()=="PostgreSQL") {
+			con = DriverManager.getConnection(urlpSql,Model.userVal.getText(),Model.pwdVal.getText());
+		} 
+		
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

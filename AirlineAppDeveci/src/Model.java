@@ -230,12 +230,11 @@ public class Model {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					
-					String url = "jdbc:mysql://"+serverVal.getText()+":"
-					+Integer.parseInt(portVal.getText())+"/"+dbVal.getText();
-					Connection con = DriverManager.getConnection(url,userVal.getText(),pwdVal.getText());
 					sqlDatabase sd = new sqlDatabase();
 					
-					switch (e.getActionCommand()) {
+					
+					
+					switch (((JButton)e.getSource()).getActionCommand()) {
 						
 					// Je nach Button werden andere Querys eingeleitet
 					
@@ -267,16 +266,7 @@ public class Model {
 					
 					
 					
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					fail.setForeground(Color.red);
-					fail.setText("Connection failed! Überprüfen Sie Ihre Werte.");
-					jcFlights.removeAllItems();
-					jcDept.removeAllItems();
-					jcArv.removeAllItems();
-					e1.printStackTrace();	
-				}
-					// Wird wahrscheinlich nie eintreten
+				} // Wird wahrscheinlich nie eintreten
 				catch(NullPointerException e2) {
 					e2.printStackTrace();
 					fail.setText("Geben Sie bitte überall gültige Werte ein!");
