@@ -8,7 +8,7 @@ import java.util.Comparator;
 import java.util.Scanner;
 
 import javax.swing.*;
-
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MaximizeAction;
 
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
@@ -31,6 +31,8 @@ public class Model {
 	JLabel pwdL = new JLabel("Passwort: ");
 	JLabel portL = new JLabel("Portnummer: ");
 	JLabel dbL = new JLabel("Datenbank: ");
+	static JLabel rowL = new JLabel("Reihe: ");
+	static JLabel seatL = new JLabel("Sitz: ");
 	static JLabel arvL = new JLabel("Flughafen / ANKUNFT: ");
 	static JLabel deptL = new JLabel("Flughafen / ABFLUG: ");
 	static JLabel fail = new JLabel("");
@@ -43,6 +45,8 @@ public class Model {
 	static JComboBox<String> jcArv = new JComboBox();
 	static JComboBox<String> jcFlights = new JComboBox();
 	static JComboBox<String> jcDb = new JComboBox();
+	static JComboBox<String> jcRow = new JComboBox();
+	static JComboBox<String> jcSeat = new JComboBox();
 	
 	JFrame jf = new JFrame("AdminAirlineApp");
 	JPanel jp = new JPanel(new GridBagLayout());
@@ -73,6 +77,10 @@ public class Model {
 		nachNameL.setVisible(false);
 		vorName.setVisible(false);
 		nachName.setVisible(false);
+		jcRow.setVisible(false);
+		jcSeat.setVisible(false);
+		rowL.setVisible(false);
+		seatL.setVisible(false);
 	}
 	
 	
@@ -213,6 +221,21 @@ public class Model {
 		
 		c.gridy++;
 		c.gridx=0;
+		c.anchor= GridBagConstraints.WEST;
+		jp.add(rowL,c);
+		
+		c.gridx++;
+		jp.add(jcRow,c);
+		
+		c.gridx++;
+		c.anchor = GridBagConstraints.CENTER;
+		jp.add(seatL,c);
+		
+		c.gridx++;
+		jp.add(jcSeat,c);
+		
+		c.gridy++;
+		c.gridx=0;
 		c.gridwidth=8;
 		c.anchor=GridBagConstraints.CENTER;
 		jp.add(buttonPass,c);
@@ -261,7 +284,7 @@ public class Model {
 										break;
 										
 					case "accept":
-									
+										sd.selectFlight();
 										break;
 										
 					case "book":
