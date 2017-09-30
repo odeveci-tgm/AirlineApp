@@ -12,6 +12,7 @@ public class sqlDatabase {
 	Connection con;
 	java.sql.Statement st;
 	java.sql.Statement st2;
+	java.sql.Statement st3;
 	ResultSet rs;
 	MysqlDataSource ds = new MysqlDataSource();
 	String url;
@@ -35,7 +36,6 @@ public class sqlDatabase {
 			
 		if(Model.jcDb.getSelectedItem()=="MySQL") {
 			con = DriverManager.getConnection(urlSql,Model.userVal.getText(),Model.pwdVal.getText());
-			System.out.println("bin drin");
 		} 
 		
 		if(Model.jcDb.getSelectedItem()=="PostgreSQL") {
@@ -88,14 +88,12 @@ public class sqlDatabase {
 			//Umwandlung in Array anschließend Zuweisung für die jeweiligen Dropdowns
 			
 			String airArr[] = airports.toArray(new String[airports.size()]);
-			int i = 0;
-			
+		
 			for(String str: airArr) {
 				Model.jcDept.addItem(str);
 				Model.jcArv.addItem(str);
-				i++;
 			}
-			System.out.println(i);
+			
 			
 			Model.fail.setForeground(Color.green);
 			Model.fail.setText("Connection established!");
@@ -131,7 +129,6 @@ public class sqlDatabase {
 		String arv = String.valueOf(Model.jcArv.getSelectedItem());
 		String[] partsDep = dep.split(",");
 		String[] arvDep = arv.split(",");
-		System.out.println(partsDep[0]);
 		try {
 			st2 = con.createStatement();
 			ResultSet rs2 = st2.executeQuery("select * from flights,(select airportcode as 'depcode' from airports "
@@ -139,9 +136,12 @@ public class sqlDatabase {
 					+ "WHERE depcode = departure_airport AND arrcode = destination_airport;");
 					
 					ArrayList<String> flights = new ArrayList<String>();
+					ArrayList<Integer> flightnr = new ArrayList<Integer>();
+					
 					while(rs2.next()) {
-							flights.add(rs2.getString("departure_airport")+","+rs2.getTime("departure_time")+"," 
-							+ rs2.getString("destination_airport")+","+rs2.getTime("destination_time"));
+							flights.add("Abflug von " + rs2.getString("departure_airport")+" am "+rs2.getDate("departure_time")+" um "+rs2.getTime("departure_time")+" Uhr || Ankunft in " 
+							+ rs2.getString("destination_airport")+" am "+rs2.getDate("destination_time")+" um "+rs2.getTime("destination_time")+" Uhr,Flugnummer: "+rs2.getInt("flightnr")+" Airline: "+rs2.getString("airline"));
+							
 							
 					}
 					
@@ -150,6 +150,9 @@ public class sqlDatabase {
 					for (String str:flightsArr) {
 						Model.jcFlights.addItem(str);
 					}
+					
+				
+					
 					
 					if (flightsArr.length==0) {
 						Model.fail.setForeground(Color.red);
@@ -163,6 +166,7 @@ public class sqlDatabase {
 						Model.vorName.setVisible(true);
 						Model.passL.setVisible(true);
 						Model.buttonPass.setVisible(true);
+						Model.buttonAcceptFlight.setVisible(true);
 						
 					}
 		} catch (SQLException e) {
@@ -170,6 +174,37 @@ public class sqlDatabase {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	public void bookFlight() {
+		
+		String vorname = Model.vorName.getText();
+		String nachname = Model.nachName.getText();
+		String flightnr = getBookedFlightNr();
+		
+		try {
+			st2 = con.createStatement();
+			st2.executeQuery("INSERT INTO passengers VALUES('NULL',");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		
+	}
+	
+	
+	public static String getBookedFlightNr() {
+		String s = String.valueOf(Model.jcFlights.getSelectedItem());
+		String[] splitted = s.split("Flugnummer: ");
+		String flugnr = splitted[1];
+		return flugnr;
+	}
+	
+	public static String getBookedAirline() {
+		String s = String.valueOf(Model.jcFlights.getSelectedItem());
+		String[] splitted = s.split("Airline: ");
+		String airline = splitted[1];
+		return airline;
 	}
 	
 

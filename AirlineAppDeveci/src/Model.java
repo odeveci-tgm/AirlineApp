@@ -49,6 +49,7 @@ public class Model {
 
 	JButton buttonServer = new JButton("Verbinden");
 	static JButton buttonFlight = new JButton("Flüge anzeigen");
+	static JButton buttonAcceptFlight = new JButton("Flug auswählen");
 	static JButton buttonPass = new JButton("Ausgewählten Flug buchen");
 	
 	
@@ -63,6 +64,7 @@ public class Model {
 		jcArv.setVisible(false);
 		jcFlights.setVisible(false);
 		buttonFlight.setVisible(false);
+		buttonAcceptFlight.setVisible(false);
 		buttonPass.setVisible(false);
 		arvL.setVisible(false);
 		deptL.setVisible(false);
@@ -91,7 +93,7 @@ public class Model {
 		passL.setForeground(Color.blue);
 		buttonServer.setActionCommand("connect");
 		buttonFlight.setActionCommand("flights");
-		
+		buttonAcceptFlight.setActionCommand("accept");
 		
 		
 		
@@ -180,9 +182,11 @@ public class Model {
 		c.anchor = GridBagConstraints.CENTER;
 		jp.add(jcFlights, c);
 		
+		c.gridwidth=6;
 		c.gridy++;
 		c.gridx=0;
-		
+		c.anchor = GridBagConstraints.CENTER;
+		jp.add(buttonAcceptFlight,c);
 		
 		c.gridy++;
 		c.gridwidth=6;
@@ -216,7 +220,6 @@ public class Model {
 		
 		jcArv.setPrototypeDisplayValue("....................................................................");
 		jcDept.setPrototypeDisplayValue(".....................................................................");
-		jcFlights.setPrototypeDisplayValue("...................................................................................................................................................................");
 		jp.setBackground(Color.LIGHT_GRAY);
 		jf.setLocationRelativeTo(null);
 		jf.setContentPane(jp);
@@ -255,6 +258,11 @@ public class Model {
 						
 										sd.getFlights();
 										break;
+										
+					case "accept":
+								
+										break;
+										
 					case "passagier":
 										
 									
@@ -300,6 +308,7 @@ public class Model {
 		
 		buttonServer.addActionListener(l);
 		buttonFlight.addActionListener(l);
+		buttonAcceptFlight.addActionListener(l);
 	}
 	
 	
