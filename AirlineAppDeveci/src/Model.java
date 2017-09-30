@@ -55,16 +55,10 @@ public class Model {
 	ActionListener l;
 	
 	
-	
-	public void init() {
-		
-		/* 
-		 * 
-			GUI MODELLIERUNG
-		 *	
-		 */
+	public static void resetFields() {
 		
 		// Alle Felder NACH dem connect Button werden unsichtbar gestellt, um die Buchung schrittweise zu gestalten
+		
 		jcDept.setVisible(false);
 		jcArv.setVisible(false);
 		jcFlights.setVisible(false);
@@ -77,7 +71,19 @@ public class Model {
 		nachNameL.setVisible(false);
 		vorName.setVisible(false);
 		nachName.setVisible(false);
+	}
+	
+	
+	public void init() {
 		
+		/* 
+		 * 
+			--- GUI MODELLIERUNG ---
+		 *	
+		 */
+		
+	
+		resetFields();
 		userVal.setText("root");
 		portVal.setText("3306");
 		serverVal.setText("localhost");
@@ -228,6 +234,7 @@ public class Model {
 			//On-Click = actionPerformed
 			
 			public void actionPerformed(ActionEvent e) {
+				
 				try {
 					
 					sqlDatabase sd = new sqlDatabase();
@@ -255,7 +262,7 @@ public class Model {
 										
 						
 					default:			
-										System.out.println("Something went wrong. REALLY Wrong.");
+										System.out.println("Something went wrong. REALLY wrong.");
 										break;
 									}
 					

@@ -24,8 +24,13 @@ public class sqlDatabase {
 		
 		String urlSql = "jdbc:mysql://"+Model.serverVal.getText()+":"
 		+Integer.parseInt(Model.portVal.getText())+"/"+Model.dbVal.getText();
-		String urlpSql = "jdbc:postgres://"+Model.serverVal.getText()+":"
-				+Integer.parseInt(Model.portVal.getText())+"/"+Model.dbVal.getText();
+		
+		String urlpSql = "jdbc:postgresql://"+Model.serverVal.getText()+":"
+		+Integer.parseInt(Model.portVal.getText())+"/"+Model.dbVal.getText();
+		
+		String urlOracle = "jdbc:oracle:thin:@"+Model.serverVal.getText()+":"
+				+Integer.parseInt(Model.portVal.getText())+":ORCL";
+		
 		try {
 			
 		if(Model.jcDb.getSelectedItem()=="MySQL") {
@@ -37,9 +42,15 @@ public class sqlDatabase {
 			con = DriverManager.getConnection(urlpSql,Model.userVal.getText(),Model.pwdVal.getText());
 		} 
 		
+		if(Model.jcDb.getSelectedItem()=="Oracle") {
+			con = DriverManager.getConnection(urlOracle);
+		} 
+		
+		
+		
 			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+		} catch (Exception e) {
+			Model.resetFields();
 			e.printStackTrace();
 		}
 	}
@@ -101,6 +112,7 @@ public class sqlDatabase {
 			rs.close();st.close(); con.close();
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
+			Model.resetFields();
 			e1.printStackTrace();
 		}
 		
@@ -159,5 +171,6 @@ public class sqlDatabase {
 		}
 		
 	}
+	
 
 }
