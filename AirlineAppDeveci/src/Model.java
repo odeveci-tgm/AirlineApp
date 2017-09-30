@@ -94,6 +94,7 @@ public class Model {
 		buttonServer.setActionCommand("connect");
 		buttonFlight.setActionCommand("flights");
 		buttonAcceptFlight.setActionCommand("accept");
+		buttonPass.setActionCommand("book");
 		
 		
 		
@@ -260,12 +261,12 @@ public class Model {
 										break;
 										
 					case "accept":
-								
+									
 										break;
 										
-					case "passagier":
+					case "book":
 										
-									
+										sd.bookFlight();
 										break;
 										
 						
@@ -309,6 +310,7 @@ public class Model {
 		buttonServer.addActionListener(l);
 		buttonFlight.addActionListener(l);
 		buttonAcceptFlight.addActionListener(l);
+		buttonPass.addActionListener(l);
 	}
 	
 	

@@ -181,12 +181,14 @@ public class sqlDatabase {
 		String vorname = Model.vorName.getText();
 		String nachname = Model.nachName.getText();
 		String flightnr = getBookedFlightNr();
+		String airline = getBookedAirline();
 		
 		try {
 			st2 = con.createStatement();
-			st2.executeQuery("INSERT INTO passengers VALUES('NULL',");
+			st2.executeUpdate("INSERT INTO passengers VALUES(NULL,'"+vorname+"','"+nachname+"','"+airline+"','"+Integer.parseInt(flightnr)+"','10','A');");
 		} catch (SQLException e) {
 			e.printStackTrace();
+			Model.fail.setText("Buchung fehlgeschlagen");
 		}
 		
 		
@@ -196,7 +198,11 @@ public class sqlDatabase {
 	public static String getBookedFlightNr() {
 		String s = String.valueOf(Model.jcFlights.getSelectedItem());
 		String[] splitted = s.split("Flugnummer: ");
-		String flugnr = splitted[1];
+		
+		// Ausgabe wäre: <flugnummer> Airline: <airline>, deswegen zweites split nötig um Airline auszuschließen!
+		
+		String[] splitted2 = splitted[1].split(" Airline: ");
+		String flugnr = splitted2[0];
 		return flugnr;
 	}
 	
