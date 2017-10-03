@@ -1,9 +1,13 @@
 import java.awt.Color;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
+import javax.swing.JOptionPane;
+
 import com.mysql.jdbc.Statement;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
@@ -12,7 +16,7 @@ public class sqlDatabase {
 	Connection con;
 	java.sql.Statement st;
 	java.sql.Statement st2;
-	java.sql.Statement st3;
+	PreparedStatement st3;
 	java.sql.Statement st4;
 	ResultSet rs;
 	MysqlDataSource ds = new MysqlDataSource();
@@ -188,15 +192,28 @@ public class sqlDatabase {
 		String airline = getBookedAirline();
 		String row = String.valueOf(Model.jcRow.getSelectedItem());
 		String seat = String.valueOf(Model.jcSeat.getSelectedItem());
+		boolean goIn = false;
+		
+		
+		if (Model.vorName.getText().isEmpty() || !(Model.vorName.getText() instanceof String) || Model.nachName.getText().isEmpty() || !(Model.nachName.getText() instanceof String)) {
+			JOptionPane.showMessageDialog(Model.jf, "Geben Sie Ihren Vor- und Nachnamen ein!");
+		} else {
+			goIn=true;
+		}
+		
+		
+		while (goIn==true) {
+			
 		
 		try {
-			st2 = con.createStatement();
-			st2.executeUpdate("INSERT INTO passengers VALUES(NULL,'"+vorname+"','"+nachname+"','"+airline+"','"+Integer.parseInt(flightnr)+"','"+row+"','"+seat+"');");
+			String sql = "INSERT INTO passengers VALUES(NULL,'"+vorname+"','"+nachname+"','"+airline+"','"+Integer.parseInt(flightnr)+"','"+row+"','"+seat+"');";
+			st3 = con.prepareStatement(sql);
+			st3.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			Model.fail.setText("Buchung fehlgeschlagen");
 		}
-		
+		}
 		
 	}
 	

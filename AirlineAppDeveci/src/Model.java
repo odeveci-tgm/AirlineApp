@@ -11,7 +11,8 @@ import javax.swing.*;
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MaximizeAction;
 
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
-
+import org.jdesktop.swingx.*;
+import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
 
 public class Model {
@@ -31,6 +32,7 @@ public class Model {
 	JLabel pwdL = new JLabel("Passwort: ");
 	JLabel portL = new JLabel("Portnummer: ");
 	JLabel dbL = new JLabel("Datenbank: ");
+	
 	static JLabel rowL = new JLabel("Reihe: ");
 	static JLabel seatL = new JLabel("Sitz: ");
 	static JLabel arvL = new JLabel("Flughafen / ANKUNFT: ");
@@ -48,7 +50,7 @@ public class Model {
 	static JComboBox<String> jcRow = new JComboBox();
 	static JComboBox<String> jcSeat = new JComboBox();
 	
-	JFrame jf = new JFrame("AdminAirlineApp");
+	static JFrame jf = new JFrame("AirlineApp");
 	JPanel jp = new JPanel(new GridBagLayout());
 
 	JButton buttonServer = new JButton("Verbinden");
@@ -103,6 +105,10 @@ public class Model {
 		buttonFlight.setActionCommand("flights");
 		buttonAcceptFlight.setActionCommand("accept");
 		buttonPass.setActionCommand("book");
+		
+		AutoCompleteDecorator.decorate(jcDept);
+		AutoCompleteDecorator.decorate(jcArv);
+
 		
 		
 		
