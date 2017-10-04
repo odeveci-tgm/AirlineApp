@@ -14,7 +14,8 @@ import org.jdesktop.swingx.autocomplete.AutoCompleteComboBoxEditor;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
-
+import org.jdesktop.swingx.*;
+import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
 
 public class Model {
@@ -34,6 +35,7 @@ public class Model {
 	JLabel pwdL = new JLabel("Passwort: ");
 	JLabel portL = new JLabel("Portnummer: ");
 	JLabel dbL = new JLabel("Datenbank: ");
+	
 	static JLabel rowL = new JLabel("Reihe: ");
 	static JLabel seatL = new JLabel("Sitz: ");
 	static JLabel arvL = new JLabel("Flughafen / ANKUNFT: ");
@@ -51,8 +53,13 @@ public class Model {
 	static JComboBox<String> jcRow = new JComboBox();
 	static JComboBox<String> jcSeat = new JComboBox();
 	
+<<<<<<< HEAD
 	static JFrame jf = new JFrame("AdminAirlineApp");
 	static JPanel jp = new JPanel(new GridBagLayout());
+=======
+	static JFrame jf = new JFrame("AirlineApp");
+	JPanel jp = new JPanel(new GridBagLayout());
+>>>>>>> branch 'master' of https://github.com/odeveci-tgm/AirlineApp.git
 
 	JButton buttonServer = new JButton("Verbinden");
 	static JButton buttonFlight = new JButton("Flüge anzeigen");
@@ -106,6 +113,10 @@ public class Model {
 		buttonFlight.setActionCommand("flights");
 		buttonAcceptFlight.setActionCommand("accept");
 		buttonPass.setActionCommand("book");
+		
+		AutoCompleteDecorator.decorate(jcDept);
+		AutoCompleteDecorator.decorate(jcArv);
+
 		
 		
 		
