@@ -3,7 +3,11 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.Duration;
 import java.util.ArrayList;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import org.jdesktop.swingx.autocomplete.*;
 import com.mysql.jdbc.Statement;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
@@ -22,6 +26,7 @@ public class sqlDatabase {
 
 	
 	public sqlDatabase() {
+	
 		
 		
 		String urlSql = "jdbc:mysql://"+Model.serverVal.getText()+":"
@@ -189,6 +194,7 @@ public class sqlDatabase {
 		String row = String.valueOf(Model.jcRow.getSelectedItem());
 		String seat = String.valueOf(Model.jcSeat.getSelectedItem());
 		
+		
 		try {
 			st2 = con.createStatement();
 			st2.executeUpdate("INSERT INTO passengers VALUES(NULL,'"+vorname+"','"+nachname+"','"+airline+"','"+Integer.parseInt(flightnr)+"','"+row+"','"+seat+"');");
@@ -196,8 +202,18 @@ public class sqlDatabase {
 			e.printStackTrace();
 			Model.fail.setText("Buchung fehlgeschlagen");
 		}
+		Model.passL.setForeground(Color.green);
+		Model.passL.setText("ERFOLGREICH GEBUCHT");
+		Model.jf.setEnabled(false);
 		
-		
+		try {
+			Thread.sleep(5000);
+			System.exit(0);
+			System.out.println("Gebucht");
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	
