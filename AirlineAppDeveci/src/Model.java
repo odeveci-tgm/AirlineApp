@@ -10,6 +10,9 @@ import java.util.Scanner;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MaximizeAction;
 
+import org.jdesktop.swingx.autocomplete.AutoCompleteComboBoxEditor;
+import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
+
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 import org.jdesktop.swingx.*;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
@@ -50,8 +53,13 @@ public class Model {
 	static JComboBox<String> jcRow = new JComboBox();
 	static JComboBox<String> jcSeat = new JComboBox();
 	
+<<<<<<< HEAD
+	static JFrame jf = new JFrame("AdminAirlineApp");
+	static JPanel jp = new JPanel(new GridBagLayout());
+=======
 	static JFrame jf = new JFrame("AirlineApp");
 	JPanel jp = new JPanel(new GridBagLayout());
+>>>>>>> branch 'master' of https://github.com/odeveci-tgm/AirlineApp.git
 
 	JButton buttonServer = new JButton("Verbinden");
 	static JButton buttonFlight = new JButton("Flüge anzeigen");
@@ -117,6 +125,8 @@ public class Model {
 		
 			// Positionierung der Felder mittels GBC-Layout
 		
+		AutoCompleteDecorator.decorate(jcArv);
+		jcArv.setSelectedItem(null);
 		GridBagConstraints c = new GridBagConstraints();
 		c.insets = new Insets(10,10,10,10);
 		c.gridx = 0;

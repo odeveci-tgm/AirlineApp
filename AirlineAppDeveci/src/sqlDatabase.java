@@ -4,10 +4,17 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.Duration;
 import java.util.ArrayList;
+<<<<<<< HEAD
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import org.jdesktop.swingx.autocomplete.*;
+=======
 
 import javax.swing.JOptionPane;
 
+>>>>>>> branch 'master' of https://github.com/odeveci-tgm/AirlineApp.git
 import com.mysql.jdbc.Statement;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
@@ -26,6 +33,7 @@ public class sqlDatabase {
 
 	
 	public sqlDatabase() {
+	
 		
 		
 		String urlSql = "jdbc:mysql://"+Model.serverVal.getText()+":"
@@ -209,6 +217,7 @@ public class sqlDatabase {
 		while (goIn==true) {
 			
 		
+		
 		try {
 			String sql = "INSERT INTO passengers VALUES(NULL,'"+vorname+"','"+nachname+"','"+airline+"','"+Integer.parseInt(flightnr)+"','"+row+"','"+seat+"');";
 			st3 = con.prepareStatement(sql);
@@ -218,10 +227,28 @@ public class sqlDatabase {
 			e.printStackTrace();
 			Model.fail.setText("Buchung fehlgeschlagen");
 		}
+<<<<<<< HEAD
 		JOptionPane.showMessageDialog(Model.jf, "Buchung erfolgreich!");
 		System.exit(0);
+=======
+<<<<<<< HEAD
+		Model.passL.setForeground(Color.green);
+		Model.passL.setText("ERFOLGREICH GEBUCHT");
+		Model.jf.setEnabled(false);
+		
+		try {
+			Thread.sleep(5000);
+			System.exit(0);
+			System.out.println("Gebucht");
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+=======
+>>>>>>> refs/remotes/origin/master
 		}
 		
+>>>>>>> branch 'master' of https://github.com/odeveci-tgm/AirlineApp.git
 	}
 	
 	
