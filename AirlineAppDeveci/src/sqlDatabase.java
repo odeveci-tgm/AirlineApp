@@ -6,15 +6,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.Duration;
 import java.util.ArrayList;
-<<<<<<< HEAD
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import org.jdesktop.swingx.autocomplete.*;
-=======
-
 import javax.swing.JOptionPane;
-
->>>>>>> branch 'master' of https://github.com/odeveci-tgm/AirlineApp.git
 import com.mysql.jdbc.Statement;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
