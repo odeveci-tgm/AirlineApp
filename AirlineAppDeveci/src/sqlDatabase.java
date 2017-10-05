@@ -191,6 +191,10 @@ public class sqlDatabase {
 		String flightnr = getBookedFlightNr();
 		String airline = getBookedAirline();
 		String row = String.valueOf(Model.jcRow.getSelectedItem());
+		
+		if (row==null) {
+			
+		}
 		String seat = String.valueOf(Model.jcSeat.getSelectedItem());
 		boolean goIn = false;
 		
@@ -209,10 +213,13 @@ public class sqlDatabase {
 			String sql = "INSERT INTO passengers VALUES(NULL,'"+vorname+"','"+nachname+"','"+airline+"','"+Integer.parseInt(flightnr)+"','"+row+"','"+seat+"');";
 			st3 = con.prepareStatement(sql);
 			st3.executeUpdate();
+			goIn=false;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			Model.fail.setText("Buchung fehlgeschlagen");
 		}
+		JOptionPane.showMessageDialog(Model.jf, "Buchung erfolgreich!");
+		System.exit(0);
 		}
 		
 	}
@@ -241,6 +248,7 @@ public class sqlDatabase {
 		try {
 			st4 = con.createStatement();
 			ResultSet rs = st4.executeQuery("select planes.maxseats,planes.seatsperrow from planes,flights WHERE flights.planetype = planes.id AND flights.flightnr ='"+getBookedFlightNr()+"' AND flights.airline ='"+getBookedAirline()+"';");
+			
 			
 			while (rs.next()) {
 				maxrow = rs.getInt("maxseats") / rs.getInt("seatsperrow");
@@ -277,11 +285,17 @@ public class sqlDatabase {
 			Model.jcSeat.addItem(seat[i]);
 		}
 		
+		
+		
 		for(int i=1;i<=getMaxRows();i++) {
 			row.add(i);
 		}
 		
 		Integer[] rowArr = row.toArray(new Integer[row.size()]);
+		
+		if (rowArr.length==0) {
+			Model.jcRow.setVisible(false);
+		}
 		
 		for (Integer nr:rowArr) {
 			Model.jcRow.addItem(nr.toString());
