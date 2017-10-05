@@ -54,7 +54,7 @@ public class Model {
 	static JComboBox<String> jcSeat = new JComboBox();
 	
 <<<<<<< HEAD
-	static JFrame jf = new JFrame("AdminAirlineApp");
+	static JFrame jf = new JFrame("AdminAirlineBuchungsApp");
 	static JPanel jp = new JPanel(new GridBagLayout());
 =======
 	static JFrame jf = new JFrame("AirlineApp");
