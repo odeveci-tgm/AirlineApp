@@ -222,28 +222,10 @@ public class sqlDatabase {
 			e.printStackTrace();
 			Model.fail.setText("Buchung fehlgeschlagen");
 		}
-<<<<<<< HEAD
-		JOptionPane.showMessageDialog(Model.jf, "Buchung erfolgreich!");
-		System.exit(0);
-=======
-<<<<<<< HEAD
-		Model.passL.setForeground(Color.green);
-		Model.passL.setText("ERFOLGREICH GEBUCHT");
-		Model.jf.setEnabled(false);
-		
-		try {
-			Thread.sleep(5000);
-			System.exit(0);
-			System.out.println("Gebucht");
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-=======
->>>>>>> refs/remotes/origin/master
-		}
-		
->>>>>>> branch 'master' of https://github.com/odeveci-tgm/AirlineApp.git
+
+
+		}		
+
 	}
 	
 	
