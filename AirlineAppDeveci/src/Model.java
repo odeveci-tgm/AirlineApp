@@ -53,13 +53,10 @@ public class Model {
 	static JComboBox<String> jcRow = new JComboBox();
 	static JComboBox<String> jcSeat = new JComboBox();
 	
-<<<<<<< HEAD
-	static JFrame jf = new JFrame("AdminAirlineBuchungsApp");
-	static JPanel jp = new JPanel(new GridBagLayout());
-=======
+
 	static JFrame jf = new JFrame("AirlineApp");
 	JPanel jp = new JPanel(new GridBagLayout());
->>>>>>> branch 'master' of https://github.com/odeveci-tgm/AirlineApp.git
+
 
 	JButton buttonServer = new JButton("Verbinden");
 	static JButton buttonFlight = new JButton("Flüge anzeigen");
